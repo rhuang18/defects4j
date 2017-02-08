@@ -6,7 +6,7 @@ in `Defects4J` -- templates exist for both to ease this task.
 1. Suppose the new project's name is `my-new-project` and its project id is
 `MyProject`, then create the Perl module and wrapper build file for the new
 project with:
-  - `./create-project -pMyProject -n"my-new-project"`
+  - `./create-project.pl -pMyProject -n"my-new-project"`
 
 This command creates the following files:
   - Perl module: `defects4j/framework/core/Project/MyProject.pm`
