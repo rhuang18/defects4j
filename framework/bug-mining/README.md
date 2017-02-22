@@ -62,8 +62,7 @@ The candidate commit database `commit-db`
 5. For trackers jira, github, google, but not sourceforge, use
    `download-issues.pl` to download the issues (additionally, use
    `merge-issue-numbers.pl` if a project has multiple trackers):
-    - `../../download-issues.pl jira -p lang -o issues | \
-      ../../merge-issue-numbers.pl -f issues.txt`
+    - `../../download-issues.pl jira -p lang -o issues | ../../merge-issue-numbers.pl -f issues.txt`
 
 6. Obtain the development history (commit logs) for the project:
     - `git --git-dir=../../../../project_repos/commons-lang.git/ log > gitlog`
@@ -74,10 +73,7 @@ The candidate commit database `commit-db`
    (e.g, issue numbers, keywords, etc.). Note that the regular expression has to
    capture the issue number. The script `merge-commit-db.pl` enumerates the
    output of `vcs-log-xref.pl`, and outputs or updates the `commit-db`:
-    -  `../../vcs-log-xref.pl git -b '/(LANG-\d+)/mi' -l gitlog \
-       -r ../../../../project_repos/commons-lang.git/ \
-       -c '../../verify-bug-file.sh issues.txt' | \
-       ../../merge-commit-db.pl -f commit-db`
+    -  `../../vcs-log-xref.pl git -b '/(LANG-\d+)/mi' -l gitlog -r ../../../../project_repos/commons-lang.git/ -c '../../verify-bug-file.sh issues.txt' | ../../merge-commit-db.pl -f commit-db`
 
 
    These are the issue trackers, project IDs, and regular expressions we used
@@ -87,6 +83,7 @@ The candidate commit database `commit-db`
    |--------------|---------------|------------------|------------------------|
    | Chart        |               |                  |                        |
    | Closure      | google        | closure-compiler | /issue.*(\d+)/mi       |
+   | Collections  | jira          | collections      | /(COLLECTIONS-\d+)/mi  |
    | Lang         | jira          | lang             | /(LANG-\d+)/mi         |
    | Math         | jira          | math             | /(MATH-\d+)/mi         |
    | Time         | github        | joda-time        | /Fix(es)?\s*#(\d+) /mi |
