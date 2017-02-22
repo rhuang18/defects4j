@@ -9,4 +9,7 @@ To construct commit-db:
 - follow the instructions
 - Regular expression for Collections is /(COLLECTIONS-\d+)/mi
 
+To Set up the project: 
+- install DBD::CSV module with cpan 
+
 
