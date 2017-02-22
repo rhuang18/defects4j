@@ -1,0 +1,12 @@
+To get familiar with bug-mining process: 
+- layout: specifies the folder hierarchy, especially source directory and test directory 
+- download the latest version of Apache Collections to get build.xml and default.properties
+- create-projects.pl creates Collections.build.xml which is a intermediate file between project.build.xml, a high level abstraction, and build.xml that comes with the project itself. 
+- clone the entire git history of Apach Collections into defects4j/project_repos/commons-collections.git for cross-reference 
+
+To construct commit-db: 
+- install JSON::Parse module from http://www.cpan.org/modules/INSTALL.html 
+- follow the instructions
+- Regular expression for Collections is /(COLLECTIONS-\d+)/mi
+
+
