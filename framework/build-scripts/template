@@ -18,11 +18,17 @@
            - build.home         ->  Root directory for compiled (test) classes
            - test.classpath     ->  Classpath to compile tests
            - compile.classpath  ->  Classpath to compile sources
+           - major.classpath    ->  Classpath to run mutation analysis
     --> 
  
     <!-- Provide directory of the test sources and target directory for classes -->
     <property name="bug-db.test.dir" value="${test.home}"/>
     <property name="classes.dir" value="${build.home}/classes"/>
+
+    <!-- Classpath to run mutation analysis -->
+    <path id="major.classpath">
+        <path refid="test.classpath"/>
+    </path>
 
 <!--
     Run tests
