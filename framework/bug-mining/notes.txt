@@ -1,6 +1,6 @@
 To get familiar with bug-mining process: 
 - layout: specifies the folder hierarchy, especially source directory and test directory 
-- download the latest version of Apache Collections to get build.xml and default.properties
+- download the latest version of Apache Collections. Getting build.xml and default.properties help get familiar with the structure of project's build file 
 - create-projects.pl creates Collections.build.xml which is a intermediate file between project.build.xml, a high level abstraction, and build.xml that comes with the project itself. 
 - clone the entire git repository of Apach Collections into defects4j/project_repos/commons-collections.git for cross-reference  (git clone --bare git://git.apache.org/commons-collections.git)
 
