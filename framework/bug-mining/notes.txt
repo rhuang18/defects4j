@@ -2,7 +2,7 @@ To get familiar with bug-mining process:
 - layout: specifies the folder hierarchy, especially source directory and test directory 
 - download the latest version of Apache Collections to get build.xml and default.properties
 - create-projects.pl creates Collections.build.xml which is a intermediate file between project.build.xml, a high level abstraction, and build.xml that comes with the project itself. 
-- clone the entire git history of Apach Collections into defects4j/project_repos/commons-collections.git for cross-reference 
+- clone the entire git repository of Apach Collections into defects4j/project_repos/commons-collections.git for cross-reference  (git clone --bare git://git.apache.org/commons-collections.git)
 
 To construct commit-db: 
 - install JSON::Parse module from http://www.cpan.org/modules/INSTALL.html 
@@ -11,5 +11,13 @@ To construct commit-db:
 
 To Set up the project: 
 - install DBD::CSV module with cpan 
+- install ant-contrib dependancy
+- define test.home, test.classpath, compile.classapth if they are not defined  
+- hard-code path to src and path to test into a second layout in Collection.pm if there is no default.properties for build.xml
+
+Fixes: 
+- remove backslashes in the commands so that users can easily copy paste the commands into command line
+- add major.classpath into build file template 
+- add a prefix D4J to the name of build files, e.g., D4J-Collections  
 
 
