@@ -1,0 +1,137 @@
+<project name="D4J-Collections" basedir="${basedir}">
+
+    <property name="compile.debug" value="yes" />
+
+    <!-- script.dir property has to be provided by caller! -->
+    <fail message="Property script.dir not set!" unless="script.dir" />
+
+    <property name="junit.jar" value="${script.dir}/build-scripts/lib/junit-4.11.jar"/>
+    <property name="easymock.jar" value="${script.dir}/build-scripts/Collections/lib/easymock.jar"/>
+    <property name="commons-io.jar" value="${script.dir}/build-scripts/Collections/lib/commons-io.jar"/>
+    <property name="hamcrest.jar" value="${script.dir}/build-scripts/Collections/lib/hamcrest.jar"/>
+    <property name="cglib.jar" value="${script.dir}/build-scripts/Collections/lib/cglib.jar"/>
+    <property name="asm.jar" value="${script.dir}/build-scripts/Collections/lib/asm.jar"/>
+    <property name="emma.lib.dir" value="${script.dir}/build-scripts/Collections/lib"/>
+
+    <!-- Include build file of the checked-out project version -->
+    <import file="${basedir}/build.xml"/>
+    <!-- Include project build file, which provides general targets -->
+    <import file="../project.build.xml"/>
+
+    <!-- TODO: Make sure that the following properties and paths are defined:
+           - source.home        ->  Direcotry of sources
+           - test.home          ->  Directory of test sources
+           - build.home         ->  Root directory for compiled (test) classes
+           - test.classpath     ->  Classpath to compile tests
+           - compile.classpath  ->  Classpath to compile sources
+    -->
+    
+    <property name="source.home" value="${source.java}"/>
+    <property name="test.home" value="${source.test}"/>
+ 
+    <!-- Provide directory of the test sources and target directory for classes -->
+    <property name="bug-db.test.dir" value="${test.home}"/>
+    <property name="classes.dir" value="${build.home}/classes"/>
+
+    <if><isreference refid="test.classpath" />
+        <then>
+        </then>
+        <elseif><isreference refid="test.support.path" />
+            <then>
+                <path id="test.classpath">
+                    <path refid="test.support.path"/>
+                </path>
+            </then>
+        </elseif>
+        <else>
+            <path id="test.classpath">
+                <pathelement location="${build.home}/classes"/>
+                <pathelement location="${build.home}/tests"/>
+                <pathelement location="${junit.jar}"/>
+                <pathelement location="${hamcrest.jar}"/>
+                <pathelement location="${easymock.jar}"/>
+            </path>
+        </else>
+    </if>
+ 
+ 
+    <if><isreference refid="compile.classpath" />
+        <then>
+        </then>
+        <elseif><isreference refid="build.path" />
+            <then>
+                <path id="compile.classpath">
+                    <path refid="build.path"/>
+                </path>
+            </then>
+        </elseif>
+        <else>
+            <path id="compile.classpath">
+                <pathelement location="${build.classes}"/>
+            </path>
+        </else>
+    </if>
+
+
+    <!-- Classpath to run mutation analysis -->
+    <path id="major.classpath">
+        <path refid="test.classpath"/>
+        <pathelement path="${cglib.jar}" />
+        <pathelement path="${asm.jar}" />
+        <pathelement path="${easymock.jar}" />
+        <pathelement path="${commons-io.jar}" />
+        <pathelement path="${hamcrest.jar}"/>
+    </path>
+
+
+    <!--
+    Run tests
+    -->
+    <target name="test"  depends="compile.tests" description="Run unit tests">
+        <junit printsummary="no" haltonfailure="no" haltonerror="no" fork="no" showoutput="true">
+            <classpath refid="test.classpath"/>
+            <classpath>
+                <pathelement location="${build.classes}"/>
+                <pathelement location="${build.tests}"/>
+                <pathelement path="${formatter_cp}" />
+                <pathelement path="${cglib.jar}" />
+                <pathelement path="${asm.jar}" />
+                <pathelement path="${junit.jar}" />
+                <pathelement path="${easymock.jar}" />
+                <pathelement path="${commons-io.jar}" />
+                <pathelement path="${hamcrest.jar}"/>
+            </classpath>
+            
+            <sysproperty key="OUTFILE" value="${OUTFILE}"/>
+            <formatter classname="edu.washington.cs.mut.testrunner.Formatter" usefile="false" />
+            <test name="${test.entry.class}" methods="${test.entry.method}" if="test.entry.class" />
+                <batchtest unless="test.entry.class">
+                    <fileset dir="${test.home}" excludes="${exclude.list}">
+                        <include name="**/*Test.java"/>
+                        <exclude name="**/Abstract*.java"/>
+                    </fileset>
+                </batchtest>
+        </junit>
+    </target>
+
+<!--
+    Run individual test and monitor class loader
+    Test has to be provided as property "test.entry" (class::method)
+    and the output is redirected to "test.output"
+-->
+    <target name="monitor.test"  description="Run unit test and monitor class loader">
+        <java fork="true" classname="edu.washington.cs.mut.testrunner.SingleTestRunner" output="${test.output}"
+            failonerror="true">
+
+            <arg value="${test.entry}"/>
+            <jvmarg value="-verbose:class"/>
+            <classpath refid="test.classpath"/>
+            <classpath>
+                <pathelement path="${formatter_cp}" />
+                <pathelement path="${cglib.jar}" />
+                <pathelement path="${asm.jar}" />
+                <pathelement path="${junit.jar}" />
+            </classpath>
+        </java>
+    </target>
+</project>
